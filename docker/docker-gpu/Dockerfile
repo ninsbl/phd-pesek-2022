@@ -142,4 +142,17 @@ RUN cd /tmp/src && \
 # clean the mess
 RUN rm -r /tmp/src
 
-CMD ["bash"]
+# Add GUI
+RUN apt-get install xfce4 xfce4-goodies tightvncserver novnc
+WORKDIR /etc/ssl
+RUN openssl req -x509 -nodes -newkey rsa:2048 -keyout novnc.pem -out novnc.pem -days 365 -pass pass:ninaml_novnc
+RUN chmod 644 novnc.pem
+
+RUN mkdir $HOME/.vnc
+COPY xstart.sh $HOME/.vnc/xstartup
+RUN vncserver
+RUN websockify -D --web=/usr/share/novnc/ --cert=/etc/ssl/novnc.pem 6080 localhost:5901
+
+EXPOSE 6080
+
+# CMD ["bash"]
