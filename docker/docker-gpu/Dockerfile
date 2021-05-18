@@ -143,7 +143,7 @@ RUN cd /tmp/src && \
 RUN rm -r /tmp/src
 
 # Add GUI
-RUN apt-get install xfce4 xfce4-goodies tightvncserver novnc
+RUN apt-get install xfce4 xfce4-goodies tightvncserver novnc -y
 WORKDIR /etc/ssl
 RUN openssl req -x509 -nodes -newkey rsa:2048 -keyout novnc.pem -out novnc.pem -days 365 -pass pass:ninaml_novnc
 RUN chmod 644 novnc.pem
